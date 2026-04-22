@@ -9,12 +9,16 @@ if __name__ == "__main__":
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=5)
     
+    
+    tentativas = 0 # ---- CONTRIBUIÇÃO EIJI: Contador de tentativas ---
+
     print(Fore.YELLOW + "Bem-vindo ao Batalha Naval, Comandante!")
     
     # 2. Inicia o loop interativo do jogo
     while True:
         exibir_tabuleiro(oceano, mostrar_navios=False)
         
+        print(f"\n Tentativa nº: {tentativas}") # ---- CONTRIBUIÇÃO EIJI: print Contador de tentativas ---
         print("\n" + "="*30)
         print("Preparar canhões! (Digite 'q' a qualquer momento para sair)")
         
@@ -41,6 +45,9 @@ if __name__ == "__main__":
             # Chama a função de atirar que criamos no map.py
             resultado = atirar(oceano, linha, coluna)
             
+            if resultado is not None: # ---- CONTRIBUIÇÃO EIJI: Soma uma tentativa apenas se o tiro for válido ---
+                tentativas += 1
+
             if resultado == True:
                 print(Fore.RED + "\n💥 BOOOM! Você acertou um navio em cheio!")
             elif resultado == False:
@@ -50,3 +57,5 @@ if __name__ == "__main__":
                 
         except ValueError:
             print(Fore.RED + "\n❌ Entrada inválida! Digite apenas números.")
+        
+    print(Fore.YELLOW + f"\nFim de jogo! Você realizou {tentativas} disparos.") # ---- CONTRIBUIÇÃO EIJI: print final exibindo quantidade final de tentativas ---
