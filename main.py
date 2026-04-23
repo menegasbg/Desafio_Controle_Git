@@ -7,9 +7,10 @@ if __name__ == "__main__":
     TOTAL_NAVIOS = 5
     navios_abatidos = 0
     
-    # NOVAS VARIÁVEIS DE MUNIÇÃO
+    # --- VARIÁVEIS INTEGRADAS ---
     MUNICAO_TOTAL = 15 
     municao_atual = MUNICAO_TOTAL 
+    tentativas = 0 
     
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
@@ -19,10 +20,11 @@ if __name__ == "__main__":
     while True:
         exibir_tabuleiro(oceano, mostrar_navios=False)
         
-        # PLACAR ATUALIZADO COM A MUNIÇÃO
+        # PLACAR ATUALIZADO 
         print(Fore.GREEN + f"\n🎯 Placar: {navios_abatidos}/{TOTAL_NAVIOS} navios abatidos")
         print(Fore.CYAN + f"🔋 Munição: {municao_atual}/{MUNICAO_TOTAL} tiros restantes")
         print("="*30)
+
         print("Preparar canhões! (Digite 'q' a qualquer momento para sair)")
         
         entrada = input("\nDigite a linha e coluna (ex: 2 5): ")
@@ -33,12 +35,19 @@ if __name__ == "__main__":
             
         try:
             linha, coluna = map(int, entrada.split())
+            
+            # Validação extra do Eiji integrada
+            if linha < 0 or linha > 9 or coluna < 0 or coluna > 9:
+                print(Fore.RED + "Coordenadas inválidas! Atire dentro do tabuleiro (0 a 9).")
+                continue
+
             resultado = atirar(oceano, linha, coluna)
             
-            # Gasta munição apenas se o tiro for válido (água ou navio)
+            # --- INTEGRAÇÃO: Conta a tentativa e gasta a munição ---
             if resultado is not None:
+                tentativas += 1
                 municao_atual -= 1
-            
+
             if resultado == True:
                 print(Fore.RED + "\n💥 BOOOM! Você acertou um navio em cheio!")
                 navios_abatidos += 1
@@ -53,13 +62,16 @@ if __name__ == "__main__":
             else:
                 print(Fore.YELLOW + "\n⚠️ Atenção: Você já atirou nessa coordenada, Comandante!")
                 
-            # --- NOVA CONDIÇÃO DE DERROTA ---
+            # --- CONDIÇÃO DE DERROTA ---
             if municao_atual <= 0 and navios_abatidos < TOTAL_NAVIOS:
-                exibir_tabuleiro(oceano, mostrar_navios=True) # Revela os navios que faltaram
+                exibir_tabuleiro(oceano, mostrar_navios=True) 
                 print(Fore.RED + "\n💀 GAME OVER! Sua munição acabou. A frota inimiga venceu a guerra.")
-                break # Encerra o jogo
+                break 
                 
         except ValueError:
             print(Fore.RED + "\n❌ Entrada inválida! Digite apenas números.")
         except IndexError:
             print(Fore.RED + "\n❌ Coordenada fora do mapa! Digite números entre 0 e 9.")
+            
+    # PRINT FINAL DO EIJI
+    print(Fore.YELLOW + f"\nFim de jogo! Você realizou {tentativas} disparos válidos.")
