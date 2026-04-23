@@ -1,6 +1,8 @@
 from colorama import Fore, init
 from assets.map import criar_tabuleiro, posicionar_navios, exibir_tabuleiro, atirar
 
+
+
 init(autoreset=True)
 
 if __name__ == "__main__":
@@ -10,6 +12,8 @@ if __name__ == "__main__":
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
     
+    tentativas = 0 # ---- CONTRIBUIÇÃO EIJI: Contador de tentativas ---
+
     print(Fore.YELLOW + "Bem-vindo ao Batalha Naval, Comandante!")
     
     while True:
@@ -18,6 +22,8 @@ if __name__ == "__main__":
         # Placar atualizado em tempo real
         print(Fore.GREEN + f"\n🎯 Placar: {navios_abatidos}/{TOTAL_NAVIOS} navios abatidos")
         print("="*30)
+
+
         print("Preparar canhões! (Digite 'q' a qualquer momento para sair)")
         
         entrada_linha = input("Digite a LINHA (0-9): ")
@@ -31,17 +37,26 @@ if __name__ == "__main__":
             break
             
         try:
+
+
             linha = int(entrada_linha)
             coluna = int(entrada_coluna)
             
+
             if linha < 0 or linha > 9 or coluna < 0 or coluna > 9:
                 print(Fore.RED + "Coordenadas inválidas! Atire dentro do tabuleiro (0 a 9).")
                 continue
                 
+
             resultado = atirar(oceano, linha, coluna)
             
+            if resultado is not None: # ---- CONTRIBUIÇÃO EIJI: Soma uma tentativa apenas se o tiro for válido ---
+                tentativas += 1
+
             if resultado == True:
                 print(Fore.RED + "\n💥 BOOOM! Você acertou um navio em cheio!")
+
+
                 navios_abatidos += 1
                 
                 # A Condição de Vitória!
@@ -50,6 +65,8 @@ if __name__ == "__main__":
                     print(Fore.GREEN + "\n🏆 VITÓRIA SUPREMA! Você afundou toda a frota inimiga, Comandante!")
                     break # Encerra o jogo
                     
+
+
             elif resultado == False:
                 print(Fore.CYAN + "\n💦 SPLASH! Tiro na água.")
             else:
@@ -57,3 +74,5 @@ if __name__ == "__main__":
                 
         except ValueError:
             print(Fore.RED + "\n❌ Entrada inválida! Digite apenas números.")
+        
+    print(Fore.YELLOW + f"\nFim de jogo! Você realizou {tentativas} disparos.") # ---- CONTRIBUIÇÃO EIJI: print final exibindo quantidade final de tentativas ---
