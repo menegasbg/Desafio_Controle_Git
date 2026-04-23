@@ -7,6 +7,10 @@ if __name__ == "__main__":
     TOTAL_NAVIOS = 5
     navios_abatidos = 0
     
+    # NOVAS VARIÁVEIS DE MUNIÇÃO
+    MUNICAO_TOTAL = 15 
+    municao_atual = MUNICAO_TOTAL 
+    
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
     
@@ -15,45 +19,47 @@ if __name__ == "__main__":
     while True:
         exibir_tabuleiro(oceano, mostrar_navios=False)
         
-        # Placar atualizado em tempo real
+        # PLACAR ATUALIZADO COM A MUNIÇÃO
         print(Fore.GREEN + f"\n🎯 Placar: {navios_abatidos}/{TOTAL_NAVIOS} navios abatidos")
+        print(Fore.CYAN + f"🔋 Munição: {municao_atual}/{MUNICAO_TOTAL} tiros restantes")
         print("="*30)
         print("Preparar canhões! (Digite 'q' a qualquer momento para sair)")
         
-        entrada_linha = input("Digite a LINHA (0-9): ")
-        if entrada_linha.lower() == 'q':
-            print(Fore.YELLOW + "Recuando tropas. Fim de jogo!")
-            break
-            
-        entrada_coluna = input("Digite a COLUNA (0-9): ")
-        if entrada_coluna.lower() == 'q':
-            print(Fore.YELLOW + "Recuando tropas. Fim de jogo!")
+        entrada = input("\nDigite a linha e coluna (ex: 2 5): ")
+        
+        if entrada.lower() == 'q':
+            print(Fore.YELLOW + "Recuando tropas. Até a próxima batalha!")
             break
             
         try:
-            linha = int(entrada_linha)
-            coluna = int(entrada_coluna)
-            
-            if linha < 0 or linha > 9 or coluna < 0 or coluna > 9:
-                print(Fore.RED + "Coordenadas inválidas! Atire dentro do tabuleiro (0 a 9).")
-                continue
-                
+            linha, coluna = map(int, entrada.split())
             resultado = atirar(oceano, linha, coluna)
+            
+            # Gasta munição apenas se o tiro for válido (água ou navio)
+            if resultado is not None:
+                municao_atual -= 1
             
             if resultado == True:
                 print(Fore.RED + "\n💥 BOOOM! Você acertou um navio em cheio!")
                 navios_abatidos += 1
                 
-                # A Condição de Vitória!
                 if navios_abatidos == TOTAL_NAVIOS:
-                    exibir_tabuleiro(oceano, mostrar_navios=True) # Mostra o mapa inteiro no final
+                    exibir_tabuleiro(oceano, mostrar_navios=True)
                     print(Fore.GREEN + "\n🏆 VITÓRIA SUPREMA! Você afundou toda a frota inimiga, Comandante!")
-                    break # Encerra o jogo
+                    break 
                     
             elif resultado == False:
                 print(Fore.CYAN + "\n💦 SPLASH! Tiro na água.")
             else:
                 print(Fore.YELLOW + "\n⚠️ Atenção: Você já atirou nessa coordenada, Comandante!")
                 
+            # --- NOVA CONDIÇÃO DE DERROTA ---
+            if municao_atual <= 0 and navios_abatidos < TOTAL_NAVIOS:
+                exibir_tabuleiro(oceano, mostrar_navios=True) # Revela os navios que faltaram
+                print(Fore.RED + "\n💀 GAME OVER! Sua munição acabou. A frota inimiga venceu a guerra.")
+                break # Encerra o jogo
+                
         except ValueError:
             print(Fore.RED + "\n❌ Entrada inválida! Digite apenas números.")
+        except IndexError:
+            print(Fore.RED + "\n❌ Coordenada fora do mapa! Digite números entre 0 e 9.")
