@@ -2,6 +2,7 @@ from colorama import Fore, init
 from assets.map import criar_tabuleiro, posicionar_navios, exibir_tabuleiro, atirar
 
 
+
 init(autoreset=True)
 
 if __name__ == "__main__":
@@ -22,6 +23,7 @@ if __name__ == "__main__":
         print(Fore.GREEN + f"\n🎯 Placar: {navios_abatidos}/{TOTAL_NAVIOS} navios abatidos")
         print("="*30)
 
+
         print("Preparar canhões! (Digite 'q' a qualquer momento para sair)")
         
         entrada_linha = input("Digite a LINHA (0-9): ")
@@ -36,16 +38,15 @@ if __name__ == "__main__":
             
         try:
 
+
             linha = int(entrada_linha)
             coluna = int(entrada_coluna)
             
-
 
             if linha < 0 or linha > 9 or coluna < 0 or coluna > 9:
                 print(Fore.RED + "Coordenadas inválidas! Atire dentro do tabuleiro (0 a 9).")
                 continue
                 
-
 
             resultado = atirar(oceano, linha, coluna)
             
@@ -54,6 +55,7 @@ if __name__ == "__main__":
 
             if resultado == True:
                 print(Fore.RED + "\n💥 BOOOM! Você acertou um navio em cheio!")
+
 
                 navios_abatidos += 1
                 
