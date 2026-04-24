@@ -3,11 +3,9 @@ from assets.map import criar_tabuleiro, posicionar_navios, exibir_tabuleiro, ati
 
 init(autoreset=True)
 
-if __name__ == "__main__":
+def jogar_partida():
     TOTAL_NAVIOS = 5
     navios_abatidos = 0
-    
-    # --- VARIÁVEIS INTEGRADAS ---
     MUNICAO_TOTAL = 15 
     municao_atual = MUNICAO_TOTAL 
     tentativas = 0 
@@ -15,12 +13,11 @@ if __name__ == "__main__":
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
     
-    print(Fore.YELLOW + "Bem-vindo ao Batalha Naval, Comandante!")
+    print(Fore.YELLOW + "\nBem-vindo ao Batalha Naval, Comandante!")
     
     while True:
         exibir_tabuleiro(oceano, mostrar_navios=False)
         
-        # PLACAR ATUALIZADO 
         print(Fore.GREEN + f"\n🎯 Placar: {navios_abatidos}/{TOTAL_NAVIOS} navios abatidos")
         print(Fore.CYAN + f"🔋 Munição: {municao_atual}/{MUNICAO_TOTAL} tiros restantes")
         print("="*30)
@@ -36,14 +33,12 @@ if __name__ == "__main__":
         try:
             linha, coluna = map(int, entrada.split())
             
-            # Validação extra do Eiji integrada
             if linha < 0 or linha > 9 or coluna < 0 or coluna > 9:
                 print(Fore.RED + "Coordenadas inválidas! Atire dentro do tabuleiro (0 a 9).")
                 continue
 
             resultado = atirar(oceano, linha, coluna)
             
-            # --- INTEGRAÇÃO: Conta a tentativa e gasta a munição ---
             if resultado is not None:
                 tentativas += 1
                 municao_atual -= 1
@@ -62,7 +57,6 @@ if __name__ == "__main__":
             else:
                 print(Fore.YELLOW + "\n⚠️ Atenção: Você já atirou nessa coordenada, Comandante!")
                 
-            # --- CONDIÇÃO DE DERROTA ---
             if municao_atual <= 0 and navios_abatidos < TOTAL_NAVIOS:
                 exibir_tabuleiro(oceano, mostrar_navios=True) 
                 print(Fore.RED + "\n💀 GAME OVER! Sua munição acabou. A frota inimiga venceu a guerra.")
@@ -73,5 +67,8 @@ if __name__ == "__main__":
         except IndexError:
             print(Fore.RED + "\n❌ Coordenada fora do mapa! Digite números entre 0 e 9.")
             
-    # PRINT FINAL DO EIJI
     print(Fore.YELLOW + f"\nFim de jogo! Você realizou {tentativas} disparos válidos.")
+
+# Ponto de partida do script
+if __name__ == "__main__":
+    jogar_partida()
