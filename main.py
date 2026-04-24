@@ -71,4 +71,13 @@ def jogar_partida():
 
 # Ponto de partida do script
 if __name__ == "__main__":
-    jogar_partida()
+    while True:
+        jogar_partida() # Chama o jogo inteiro
+        
+        # Quando o jogo acaba (vitória, derrota ou 'q'), ele cai aqui:
+        print(Fore.CYAN + "\n" + "="*40)
+        resposta = input(Fore.YELLOW + "Deseja jogar novamente, Comandante? (s/n): ").strip().lower()
+        
+        if resposta != 's':
+            print(Fore.GREEN + "\nFrota recolhida com sucesso. Fim de transmissão!")
+            break # Quebra o loop e encerra o script de vez
