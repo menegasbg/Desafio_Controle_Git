@@ -8,14 +8,30 @@ if __name__ == "__main__":
     navios_abatidos = 0
     
     # --- VARIÁVEIS INTEGRADAS ---
-    MUNICAO_TOTAL = 15 
-    municao_atual = MUNICAO_TOTAL 
     tentativas = 0 
     
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
     
     print(Fore.YELLOW + "Bem-vindo ao Batalha Naval, Comandante!")
+
+    # --- INÍCIO DO SISTEMA DE DIFICULDADE ---
+    print(Fore.CYAN + "\nEscolha o seu nível de dificuldade:")
+    print("1. Cadete (30 tiros)")
+    print("2. Capitão (20 tiros)")
+    print("3. Almirante (10 tiros)")
+    
+    escolha = input(Fore.YELLOW + "Digite o número da dificuldade (1/2/3): ")
+    
+    if escolha == '1':
+        MUNICAO_TOTAL = 30
+    elif escolha == '3':
+        MUNICAO_TOTAL = 10
+    else:
+        MUNICAO_TOTAL = 20 # Médio é o padrão caso ele digite errado
+        
+    municao_atual = MUNICAO_TOTAL
+    print(Fore.GREEN + f"\nVocê tem {MUNICAO_TOTAL} mísseis disponíveis. Boa sorte!\n")
     
     while True:
         exibir_tabuleiro(oceano, mostrar_navios=False)
