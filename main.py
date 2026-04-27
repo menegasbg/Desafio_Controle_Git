@@ -13,7 +13,7 @@ def jogar_partida():
     oceano = criar_tabuleiro(10)
     oceano = posicionar_navios(oceano, quantidade=TOTAL_NAVIOS)
     
-    print(Fore.YELLOW + "Bem-vindo ao Batalha Naval, Comandante!")
+    print(Fore.YELLOW + "Bem-vindo ao Batalha Naval OFICIAAAAAAAAAAAAAAL, Comandante!")
 
     # --- INÍCIO DO SISTEMA DE DIFICULDADE ---
     print(Fore.CYAN + "\nEscolha o seu nível de dificuldade:")
