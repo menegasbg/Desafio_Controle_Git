@@ -86,6 +86,10 @@ def jogar_partida():
             print(Fore.RED + "\n❌ Coordenada fora do mapa! Digite números entre 0 e 9.")
             
     print(Fore.YELLOW + f"\nFim de jogo! Você realizou {tentativas} disparos válidos.")
+    # Só calcula a precisão se o jogador tiver feito ao menos um disparo
+    if tentativas > 0:
+        precisao = (navios_abatidos / tentativas) * 100
+        print(Fore.MAGENTA + f"📊 Sua precisão de acertos foi de: {precisao:.1f}%")
 
 # Ponto de partida do script
 if __name__ == "__main__":
